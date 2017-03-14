@@ -5,6 +5,14 @@ import sys
 from pickle import dump, load
 
 
+def reset_init(file_name):
+    f = open(file_name, 'wb')
+    #f.close
+    counter = 1
+    dump(counter, f)
+    f.close
+    print(counter)
+
 def update_counter(file_name, reset=False):
     """ Updates a counter stored in the file 'file_name'
 
@@ -30,7 +38,21 @@ def update_counter(file_name, reset=False):
     >>> update_counter('blah2.txt')
     2
     """
-    pass
+    if exists(file_name):
+        if reset is True:
+            reset_init(file_name)
+        else:
+            f = open(file_name,'rb+')
+            #f.close
+            counter = int(load(f)) + 1
+            dump(counter, f)
+            f.close
+            print(counter)
+    else:
+        reset_init(file_name)
+
+
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
